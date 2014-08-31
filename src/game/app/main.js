@@ -13,8 +13,8 @@
         }while(!name); //be really annoying
 
         new GameRunner()
-            .setPlayer(new Player(name))
             .connect(socket)
+            .setPlayer(new Player(socket, name))
             .start()
         ;
 

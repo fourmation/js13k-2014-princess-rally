@@ -2,25 +2,18 @@
 GameRunner = (function () {
 
 
-    var onGreet = function(name){
+    var onNews = function(news, type){
 
         var elemDiv = document.createElement('div');
-        var text = document.createTextNode(name + " just joined the game, Hello!");
-        elemDiv.appendChild(text);
-        document.body.appendChild(elemDiv);
-
-    };
-
-    var onFarewell = function(name){
-
-        var elemDiv = document.createElement('div');
-        var text = document.createTextNode(name + " just left the game, Goodbye!");
+        var text = document.createTextNode("["+type+"] " + news);
         elemDiv.appendChild(text);
         document.body.appendChild(elemDiv);
 
     };
 
     return function(){
+
+        var thisGame = this;
 
         this.player = null;
         this.socket = {};
@@ -32,15 +25,22 @@ GameRunner = (function () {
 
         this.connect = function(socket){
 
+            console.log('socket connected', socket);
+
             if (!this.socket.connected){
                 console.log('connecting');
                 this.socket = socket;
             }
 
-            this.player.setConnection(this.socket);
+            thisGame.socket.on('game_news', function(news){
+                onNews(news, 'Game news');
+                console.log('game_news', news);
+            });
 
-            this.socket.on('greet', onGreet);
-            this.socket.on('farewell', onFarewell);
+            thisGame.socket.on('team_news', function(news){
+                onNews(news, 'Team news');
+                console.log('team_news', news);
+            });
 
             return this;
         };

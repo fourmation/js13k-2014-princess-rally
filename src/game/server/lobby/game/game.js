@@ -73,6 +73,8 @@ var Game = (function (Team) {
 
             players.push(player);
 
+            player.joinGame(thisGame); //reciprocate reference
+
             var team = null;
             for(var i=0; i<teams.length; i++){
                 if (!team || team.players.length > teams[i].players.length){ //find the team with least players
@@ -84,7 +86,6 @@ var Game = (function (Team) {
 
             team.addPlayer(player);
 
-            player.joinGame(thisGame); //reciprocate reference
         };
 
         this.removePlayer = function(player){

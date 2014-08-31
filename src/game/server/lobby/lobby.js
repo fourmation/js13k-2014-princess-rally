@@ -29,28 +29,41 @@ var Lobby = (function (Player, Game) {
 
             log.debug('New connection', socket.id);
 
+            var player = null;
 
-            var player = new Player(socket);
+            socket.on('playerInit', function(playerInfo){
 
-            var game = null;
-            for(var i=0; i<games.length; i++){
-                if (!games[i].isFull()){
-                    game = games[i]; //join the first game not full (bias towards earlier created games)
+                log.info('Player initialised', playerInfo);
+
+                player = new Player(socket, playerInfo);
+
+                var game = null;
+                for(var i=0; i<games.length; i++){
+                    if (!games[i].isFull()){
+                        game = games[i]; //join the first game not full (bias towards earlier created games)
+                    }
                 }
-            }
 
-            if (!game){
-                game = new Game();
-                games.push(game);
-            }
+                if (!game){
+                    game = new Game();
+                    games.push(game);
+                }
 
-            game.addPlayer(player);
-            player.joinGame(game); //reciprocate reference
+                game.addPlayer(player); //reciprocate reference
+
+            });
+
+
 
             socket.on('disconnect', function(){
-                player.disconnect();
-                cleanUpGames();
-                io.emit('farewell', player.name);
+
+
+                if (player){ // player has been initialised
+                    player.disconnect();
+
+                    cleanUpGames();
+                }
+
             });
 
         });
