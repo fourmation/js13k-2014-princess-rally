@@ -42,6 +42,10 @@ GameRunner = (function () {
                 console.log('team_news', news);
             });
 
+            thisGame.socket.on('hand_dealt', function(cards){
+                console.log('A hand has been dealt to the team:', cards);
+            });
+
             return this;
         };
 

@@ -24,6 +24,7 @@ var Player = (function () {
             thisPlayer.socket
                 .to(game.id)
                 .broadcast.emit('game_news', thisPlayer.name + " just joined the game");
+            thisPlayer.socket.emit('game_news', 'You have joined game '+game.id);
         };
 
         this.joinTeam = function(team){
@@ -32,6 +33,8 @@ var Player = (function () {
             thisPlayer.socket
                 .to(team.id)
                 .broadcast.emit('team_news', thisPlayer.name + " just joined your team");
+            thisPlayer.socket.emit('team_news', 'You have joined team '+team.id);
+
         };
 
         this.disconnect = function(){

@@ -4,10 +4,12 @@ var Team = (function(){
 
     var teamId = 0;
 
-    return function(){
+    return function(socket){
 
         var thisTeam = this;
+
         this.id = 'team_' + teamId ++;
+
         this.players = [];
 
         this.addPlayer = function(player){
@@ -32,18 +34,27 @@ var Team = (function(){
 
         };
 
+        this.dealHand = function(cards){
+
+            socket.to(this.id).emit('hand_dealt', cards);
+
+        }
+
     };
 
 })();
 
-var Game = (function (Team) {
+var deck = require('./deck/deck');
+var Game = (function (Team, Deck) {
 
     //private static vars
     var maxPlayers = 6,
-        gameId = 0
+        gameId = 0,
+        cardsPerPlayer = 6,
+        deck = new Deck()
     ;
 
-    return function(){
+    return function(socket){
 
         var thisGame = this;
         this.id = 'game_' + gameId++;
@@ -51,11 +62,26 @@ var Game = (function (Team) {
         //private vars
         var players = [],
             teams = [
-                new Team(),
-                new Team(),
-                new Team()
+                new Team(socket, thisGame),
+                new Team(socket, thisGame),
+                new Team(socket, thisGame)
             ] //initialise with 3 teams
         ;
+
+        var dealHand = function(roundId){
+
+            for(var i = 0; i<teams.length; i++){
+
+                var team = teams[i],
+                    cardCount = team.players.length * cardsPerPlayer,
+                    cards = deck.getCards(roundId+team.id, cardCount)
+                ;
+
+                team.dealHand(cards);
+
+            }
+
+        };
 
         log.info("New game created with id", this.id);
 
@@ -86,6 +112,9 @@ var Game = (function (Team) {
 
             team.addPlayer(player);
 
+            //temporary test!
+            dealHand(1);
+
         };
 
         this.removePlayer = function(player){
@@ -102,6 +131,6 @@ var Game = (function (Team) {
 
     };
 
-})(Team);
+})(Team, deck);
 
 module.exports = Game;

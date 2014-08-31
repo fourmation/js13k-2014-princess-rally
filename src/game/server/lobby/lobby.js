@@ -45,7 +45,7 @@ var Lobby = (function (Player, Game) {
                 }
 
                 if (!game){
-                    game = new Game();
+                    game = new Game(io);
                     games.push(game);
                 }
 
