@@ -1,7 +1,21 @@
 'use strict';
 
 log('Hi! This is an example game!');
+
 var Player = require('./player/player'); //you can require child js files
+var JWT = require('./jwt/jwt');
+
+
+var jwtToken = new JWT('so_secret');
+
+var token = jwtToken.encode({foo:'bar'});
+
+log.debug('token is', token);
+
+if (jwtToken.validate(token)){
+    var data = jwtToken.decode(token);
+    log.debug(data);
+}
 
 var io = require('sandbox-io');
 log('Loaded sandbox-io', io);
