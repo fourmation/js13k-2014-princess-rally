@@ -1,6 +1,10 @@
-# js13k Server Boilerplate
+# js13k Princess Rally
 
-* Author: Zak Henry <zak@4mation.com.au>
+* Authors:
+** Zak Henry <zak@4mation.com.au>
+
+
+# Development notes
 
 ***
 

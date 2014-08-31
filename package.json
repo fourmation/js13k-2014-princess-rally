@@ -1,12 +1,12 @@
 {
   "author": "Zak Henry",
-  "name": "example-js13kgame",
+  "name": "js13k-2014-princess-rally",
   "version": "0.0.1",
   "homepage": "http://localhost:3000",
-  "description": "An example of a js13k server game",
+  "description": "js13k submission, server category. Two teams battle to capture Princess Buttercup",
   "repository": {
     "type": "git",
-    "url": "https://github.com/xiphiaz/js13k-server-boilerplate"
+    "url": "https://github.com/fourmation/js13k-2014-princess-rally"
   },
   "license": {
     "type": "MIT",
